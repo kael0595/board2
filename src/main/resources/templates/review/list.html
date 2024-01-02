@@ -18,7 +18,7 @@
     <tr class="text-center" th:each="review: ${reviewList}">
       <td th:text="${review.id}"></td>
       <td class="text-start">
-        <a th:href="@{|/review/detail/${review.id}|}" th:text="${review.subject}"></a>
+        <a th:href="@{|/review/${review.id}|}" th:text="${review.subject}"></a>
       </td>
       <td><span th:if="${review.author != null}" th:text="${review.author.username}"></span></td>
       <td th:text="${#temporals.format(review.createDate, 'yyyy-MM-dd HH:mm')}"></td>

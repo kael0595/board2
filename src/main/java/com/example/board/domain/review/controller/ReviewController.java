@@ -65,4 +65,39 @@ public class ReviewController {
 
         return "redirect:/review/list";
     }
+
+    @GetMapping("/modify/{id}")
+    public String modify(@Valid ReviewCreateForm reviewCreateForm,
+                         @PathVariable("id") Long id,
+                         Principal principal) {
+
+        Review review = this.reviewService.findById(id);
+
+        Member author = this.memberService.findByUsername(principal.getName());
+
+        this.reviewService.modifyValidate(review, author);
+
+        this.reviewService.modify(review, reviewCreateForm);
+
+        return "review/create";
+    }
+
+    @PostMapping("/modify/{id}")
+    public String modify(@Valid ReviewCreateForm reviewCreateForm,
+                         @PathVariable("id") Long id,
+                         BindingResult bindingResult,
+                         Principal principal) {
+
+        if (bindingResult.hasErrors()) return "review/create";
+
+        Review review = this.reviewService.findById(id);
+
+        Member author = this.memberService.findByUsername(principal.getName());
+
+        this.reviewService.modifyValidate(review, author);
+
+        this.reviewService.modify(review, reviewCreateForm);
+
+        return String.format("redirect:/review/%s", id);
+    }
 }
