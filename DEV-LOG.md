@@ -1,5 +1,8 @@
 # DEV-LOG
 ## 24-01-03
+### feature/get-members
+- [x] login 작성
+
 ### feature/post-members
 - [x] Member entity 작성
 - [x] signup 작성
