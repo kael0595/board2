@@ -40,4 +40,8 @@ public class MemberService {
                 .build();
         this.memberRepository.save(member);
     }
+
+    public Member findByUsername(String name) {
+        return this.memberRepository.findByUsername(name);
+    }
 }

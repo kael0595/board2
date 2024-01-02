@@ -1,11 +1,14 @@
 package com.example.board.domain.review.service;
 
+import com.example.board.domain.member.entity.Member;
+import com.example.board.domain.review.dto.ReviewCreateForm;
 import com.example.board.domain.review.entity.Review;
 import com.example.board.domain.review.repository.ReviewRepository;
 import com.example.board.standard.exception.DataNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,5 +28,15 @@ public class ReviewService {
             return review.get();
         }
         throw new DataNotFoundException("review not found");
+    }
+
+    public void create(ReviewCreateForm reviewCreateForm, Member author) {
+
+        Review review = Review.builder()
+                .subject(reviewCreateForm.getSubject())
+                .content(reviewCreateForm.getContent())
+                .createDate(LocalDateTime.now())
+                .build();
+        this.reviewRepository.save(review);
     }
 }

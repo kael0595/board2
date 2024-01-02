@@ -1,5 +1,8 @@
 # DEV-LOG
 ## 24-01-03
+### feature/post-reviews
+- [x] review create 작성
+
 ### feature/get-review
 - [x] Review entity 작성
 - [x] review list 작성
