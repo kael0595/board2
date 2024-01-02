@@ -1,5 +1,8 @@
 # DEV-LOG
 ## 24-01-03
+### feature/get-review
+- [x] Review entity 작성
+
 ### feature/get-members
 - [x] login 작성
 - [x] login 템플릿 작성
