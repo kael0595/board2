@@ -5,3 +5,4 @@
 - [x] application.properties -> application.yml 변경
 - [x] BaseEntity 작성
 - [x] SecurityConfig 작성
+- [x] AppConfig 작성
