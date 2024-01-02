@@ -2,6 +2,7 @@
 ## 24-01-03
 ### feature/get-members
 - [x] login 작성
+- [x] login 템플릿 작성
 
 ### feature/post-members
 - [x] Member entity 작성
