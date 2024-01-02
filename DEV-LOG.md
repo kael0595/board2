@@ -2,6 +2,7 @@
 ## 24-01-03
 ### feature/get-review
 - [x] Review entity 작성
+- [x] review list 작성
 
 ### feature/get-members
 - [x] login 작성
