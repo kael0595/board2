@@ -3,6 +3,7 @@
 ### feature/post-reviews
 - [x] review create 작성
 - [x] create 템플릿 작성
+- [x] create 수정 및 create 템플릿 수정
 
 ### feature/get-review
 - [x] Review entity 작성

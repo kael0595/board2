@@ -35,6 +35,7 @@ public class ReviewService {
         Review review = Review.builder()
                 .subject(reviewCreateForm.getSubject())
                 .content(reviewCreateForm.getContent())
+                .author(author)
                 .createDate(LocalDateTime.now())
                 .build();
         this.reviewRepository.save(review);
