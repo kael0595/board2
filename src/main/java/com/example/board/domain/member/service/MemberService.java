@@ -4,6 +4,7 @@ import com.example.board.domain.member.dto.MemberJoinForm;
 import com.example.board.domain.member.entity.Member;
 import com.example.board.domain.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 
@@ -14,6 +15,8 @@ import java.time.LocalDateTime;
 public class MemberService {
 
     private final MemberRepository memberRepository;
+
+    private final PasswordEncoder passwordEncoder;
 
     public void signupValidate(BindingResult bindingResult, MemberJoinForm memberJoinForm) {
         if (!memberJoinForm.getPassword1().equals(memberJoinForm.getPassword2())) {
@@ -31,7 +34,7 @@ public class MemberService {
 
         Member member = Member.builder()
                 .username(memberJoinForm.getUsername())
-                .password(memberJoinForm.getPassword1())
+                .password(passwordEncoder.encode(memberJoinForm.getPassword1()))
                 .email(memberJoinForm.getEmail())
                 .createDate(LocalDateTime.now())
                 .build();
