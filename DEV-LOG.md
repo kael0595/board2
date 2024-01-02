@@ -17,3 +17,4 @@
 - [x] form_errors 작성
 - [x] layout 작성
 - [x] navbar 작성
+- [x] bootstrap.css 작성
