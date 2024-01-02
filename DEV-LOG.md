@@ -3,3 +3,4 @@
 ### feature/common-module
 - [x] build.gradle 의존성 추가
 - [x] application.properties -> application.yml 변경
+- [x] BaseEntity 작성
