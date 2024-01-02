@@ -7,3 +7,4 @@
 - [x] SecurityConfig 작성
 - [x] AppConfig 작성
 - [x] DataNotFoundException 작성
+- [x] UserSecurityService 작성
