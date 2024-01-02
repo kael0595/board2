@@ -18,3 +18,4 @@
 - [x] layout 작성
 - [x] navbar 작성
 - [x] bootstrap.css 작성
+- [x] bootstrap.js 작성
