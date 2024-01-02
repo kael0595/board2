@@ -4,6 +4,7 @@
 - [x] Member entity 작성
 - [x] singup 작성
 - [x] UserRole 작성
+- [x] signup 템플릿 작성
 
 ### feature/common-module
 - [x] build.gradle 의존성 추가
