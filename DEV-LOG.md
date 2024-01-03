@@ -1,11 +1,14 @@
 # DEV-LOG
+## 24-01-04
+### feature/post-reviews
+- [x] modify 수정 및 modify 템플릿 작성
+
 ## 24-01-03
 ### feature/post-reviews
 - [x] review create 작성
 - [x] create 템플릿 작성
 - [x] create 수정 및 create 템플릿 수정
 - [x] modify 작성
-- [x] modify 수정 및 modify 템플릿 작성
 
 ### feature/get-review
 - [x] Review entity 작성
