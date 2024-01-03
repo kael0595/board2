@@ -13,7 +13,7 @@ import lombok.experimental.SuperBuilder;
 import java.util.List;
 
 @Entity
-@SuperBuilder
+@SuperBuilder(toBuilder = true)
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor

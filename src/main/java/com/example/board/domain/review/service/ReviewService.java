@@ -56,7 +56,7 @@ public class ReviewService {
 
     public void modify(Review review, ReviewCreateForm reviewCreateForm) {
 
-        review = Review.builder()
+        review = review.toBuilder()
                 .subject(reviewCreateForm.getSubject())
                 .content(reviewCreateForm.getContent())
                 .modifyDate(LocalDateTime.now())
