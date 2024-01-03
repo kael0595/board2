@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -52,6 +53,24 @@ public class CommentController {
     Comment comment = this.commentService.create(review, author, commentCreateForm, tag);
 
     return String.format("redirect:/review/%s#comment_%s",comment.getReview().getId(), comment.getId());
+
+  }
+
+  @GetMapping(value = "/modify/{id}")
+  public String modify(CommentCreateForm commentCreateForm,
+                       @PathVariable("id") Long id,
+                       Principal principal) {
+    Comment comment = this.commentService.getCommentById(id);
+
+    Member author = this.memberService.findByUsername(principal.getName());
+
+    this.commentService.modifyValidate(comment, author);
+
+    Comment tag = (commentCreateForm.getTagId() != null) ? this.commentService.getCommentById(commentCreateForm.getTagId()) : null;
+
+    this.commentService.modify(comment, commentCreateForm, tag);
+
+    return "comment/create";
 
   }
 
