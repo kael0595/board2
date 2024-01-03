@@ -1,15 +1,15 @@
 package com.example.board.domain.review.entity;
 
+import com.example.board.domain.comment.entity.Comment;
 import com.example.board.domain.member.entity.Member;
 import com.example.board.standard.entity.BaseEntity;
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -25,6 +25,9 @@ public class Review extends BaseEntity {
 
     @ManyToOne
     private Member author;
+
+    @OneToMany(mappedBy = "review", cascade = CascadeType.REMOVE)
+    private List<Comment> commentList;
 
     @ManyToMany
     Set<Member> voter;
