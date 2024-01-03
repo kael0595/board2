@@ -8,6 +8,7 @@ import com.example.board.standard.exception.DataNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
@@ -62,5 +63,21 @@ public class ReviewService {
                 .modifyDate(LocalDateTime.now())
                 .build();
         this.reviewRepository.save(review);
+    }
+
+    public void deleteValidate(Review review, Member author) {
+
+        if (review == null){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "존재하지 않는 게시물입니다.");
+        }
+
+        if (!review.getAuthor().getUsername().equals(author.getUsername())){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "삭제 권한이 없습니다.");
+        }
+
+    }
+
+    public void delete(Review review) {
+        this.reviewRepository.delete(review);
     }
 }

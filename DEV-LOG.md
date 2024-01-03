@@ -1,5 +1,8 @@
 # DEV-LOG
 ## 24-01-04
+### feature/get-review
+- [x] review delete 작성
+
 ### feature/post-reviews
 - [x] modify 수정 및 modify 템플릿 작성
 
