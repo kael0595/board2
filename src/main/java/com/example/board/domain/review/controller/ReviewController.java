@@ -103,8 +103,7 @@ public class ReviewController {
 
     @GetMapping("/delete/{id}")
     public String delete (@PathVariable("id") Long id,
-                          Principal principal,
-                          BindingResult bindingResult) {
+                          Principal principal) {
 
         Review review = this.reviewService.findById(id);
 
