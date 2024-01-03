@@ -54,4 +54,27 @@ public class CommentController {
     return String.format("redirect:/review/%s#comment_%s",comment.getReview().getId(), comment.getId());
 
   }
+
+  @PostMapping("/modify/{id}")
+  public String modify (Model model,
+                        @PathVariable("id") Long id,
+                        Principal principal,
+                        @Valid CommentCreateForm commentCreateForm,
+                        BindingResult bindingResult) {
+
+    Comment comment = this.commentService.getCommentById(id);
+
+    Member author = this.memberService.findByUsername(principal.getName());
+
+    if (bindingResult.hasErrors()) return "review/detail";
+
+    this.commentService.modifyValidate(comment, author);
+
+    Comment tag = (commentCreateForm.getTagId() != null) ? this.commentService.getCommentById(commentCreateForm.getTagId()) : null;
+
+    this.commentService.modify(comment, commentCreateForm, tag);
+
+    return String.format("redirect:/review/%s#comment_%s",comment.getReview().getId(), comment.getId());
+
+  }
 }

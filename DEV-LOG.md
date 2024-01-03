@@ -4,6 +4,7 @@
 - [x] Comment 작성 및 Member, Review 수정
 - [x] comment create 작성
 - [x] review detail 템플릿에 comment create 추가
+- [x] comment modify 작성
 
 ### feature/get-review
 - [x] review delete 작성

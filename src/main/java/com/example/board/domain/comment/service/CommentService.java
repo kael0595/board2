@@ -44,4 +44,25 @@ public class CommentService {
       return comment.get();
     } throw new DataNotFoundException("comment not found");
   }
+
+  public void modifyValidate(Comment comment, Member author) {
+
+    if (comment == null) {
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "존재하지 않는 댓글입니다.");
+    }
+
+    if (!comment.getAuthor().getUsername().equals(author.getUsername())) {
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정 권한이 없습니다.");
+    }
+  }
+
+  public void modify(Comment comment, CommentCreateForm commentCreateForm, Comment tag) {
+
+    comment = comment.toBuilder()
+        .content(commentCreateForm.getContent())
+        .modifyDate(LocalDateTime.now())
+        .tag(tag)
+        .build();
+    this.commentRepository.save(comment);
+  }
 }
