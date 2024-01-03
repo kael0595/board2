@@ -1,5 +1,6 @@
 package com.example.board.domain.review.controller;
 
+import com.example.board.domain.comment.dto.CommentCreateForm;
 import com.example.board.domain.member.entity.Member;
 import com.example.board.domain.member.service.MemberService;
 import com.example.board.domain.review.dto.ReviewCreateForm;
@@ -37,9 +38,10 @@ public class ReviewController {
         return "review/list";
     }
 
-    @GetMapping("/{id}")
+    @GetMapping(value = "/{id}")
     public String detail(@PathVariable("id") Long id,
-                         Model model) {
+                         Model model,
+                         CommentCreateForm commentCreateForm) {
 
         Review review = this.reviewService.findById(id);
 
