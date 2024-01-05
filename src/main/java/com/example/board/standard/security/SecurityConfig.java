@@ -25,11 +25,11 @@ public class SecurityConfig {
                 .csrf().disable()
                 .formLogin()
                 .loginPage("/member/login")
-                .defaultSuccessUrl("/member/signup")
+                .defaultSuccessUrl("/review/list")
                 .and()
                 .logout()
                 .logoutRequestMatcher(new AntPathRequestMatcher("/member/logout"))
-                .logoutSuccessUrl("/")
+                .logoutSuccessUrl("/review/list")
                 .invalidateHttpSession(true);
 
         return http.build();

@@ -3,9 +3,9 @@ spring:
     active:
   datasource:
     driverClassName: org.mariadb.jdbc.Driver
-    url: jdbc:mariadb://127.0.0.1:3306/board?useUnicode=true&characterEncoding=utf8&serverTimeZone=Asia/Seoul
+    url: jdbc:mariadb://127.0.0.1:3307/board?useUnicode=true&characterEncoding=utf8&serverTimeZone=Asia/Seoul
     username: root
-    password: gkdlfn12
+    password:
   thymeleaf:
     cache: false
     prefix: file:src/main/resources/templates/

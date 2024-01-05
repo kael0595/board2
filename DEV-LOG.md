@@ -1,4 +1,8 @@
 # DEV-LOG
+## 24-01-05
+### feature/post-comments
+- [x] login, logout 성공 시 redirect url 수정
+
 ## 24-01-04
 ### feature/post-comments
 - [x] Comment 작성 및 Member, Review 수정
@@ -20,6 +24,7 @@
 - [x] create 템플릿 작성
 - [x] create 수정 및 create 템플릿 수정
 - [x] modify 작성
+- [x] detail 템플릿 수정
 
 ### feature/get-review
 - [x] Review entity 작성
