@@ -9,6 +9,7 @@ import com.example.board.standard.exception.DataNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
@@ -26,6 +27,7 @@ public class CommentService {
     }
   }
 
+  @Transactional
   public Comment create(Review review, Member author, CommentCreateForm commentCreateForm, Comment tag) {
     Comment comment = Comment.builder()
         .review(review)
@@ -56,6 +58,7 @@ public class CommentService {
     }
   }
 
+  @Transactional
   public void modify(Comment comment, CommentCreateForm commentCreateForm, Comment tag) {
 
     comment = comment.toBuilder()
