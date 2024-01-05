@@ -1,5 +1,8 @@
 # DEV-LOG
 ## 24-01-06
+### feature/delete-comments
+- [x] comment delete 작성
+
 ### feature/post-comments
 - [x] reply create 작성 및 review detail 수정
 

@@ -140,4 +140,21 @@ public class CommentController {
         return String.format("redirect:/review/%s#comment_%s", comment.getReview().getId(), comment.getId());
 
     }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/delete/{id}")
+    public String delete(@PathVariable("id") Long id,
+                         Principal principal) {
+        Comment comment = this.commentService.getCommentById(id);
+
+        Review review = this.reviewService.findById(comment.getReview().getId());
+
+        Member author = this.memberService.findByUsername(principal.getName());
+
+        this.commentService.deleteValidate(comment, author);
+
+        this.commentService.delete(comment);
+
+        return String.format("redirect:/review/%s", review.getId());
+    }
 }
