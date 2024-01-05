@@ -1,6 +1,7 @@
 package com.example.board.domain.review.controller;
 
 import com.example.board.domain.comment.dto.CommentCreateForm;
+import com.example.board.domain.comment.service.CommentService;
 import com.example.board.domain.member.entity.Member;
 import com.example.board.domain.member.service.MemberService;
 import com.example.board.domain.review.dto.ReviewCreateForm;
@@ -8,6 +9,7 @@ import com.example.board.domain.review.entity.Review;
 import com.example.board.domain.review.service.ReviewService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -27,6 +29,8 @@ public class ReviewController {
     private final ReviewService reviewService;
 
     private final MemberService memberService;
+
+    private final CommentService commentService;
 
     @GetMapping("/list")
     public String list(Model model) {
@@ -50,11 +54,14 @@ public class ReviewController {
         return "review/detail";
     }
 
+
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/create")
     public String create(ReviewCreateForm reviewCreateForm) {
         return "review/create";
     }
 
+    @PreAuthorize("isAuthenticated()")
     @PostMapping("/create")
     public String create(@Valid ReviewCreateForm reviewCreateForm,
                          BindingResult bindingResult,
@@ -68,6 +75,7 @@ public class ReviewController {
         return "redirect:/review/list";
     }
 
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/modify/{id}")
     public String modify(ReviewCreateForm reviewCreateForm,
                          @PathVariable("id") Long id,
@@ -84,6 +92,7 @@ public class ReviewController {
         return "review/create";
     }
 
+    @PreAuthorize("isAuthenticated()")
     @PostMapping("/modify/{id}")
     public String modify(@Valid ReviewCreateForm reviewCreateForm,
                          @PathVariable("id") Long id,
@@ -103,6 +112,7 @@ public class ReviewController {
         return String.format("redirect:/review/%s", id);
     }
 
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/delete/{id}")
     public String delete (@PathVariable("id") Long id,
                           Principal principal) {

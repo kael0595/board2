@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -59,13 +60,16 @@ public class CommentService {
   }
 
   @Transactional
-  public void modify(Comment comment, CommentCreateForm commentCreateForm, Comment tag) {
+  public void modify(Comment comment, CommentCreateForm commentCreateForm) {
 
     comment = comment.toBuilder()
         .content(commentCreateForm.getContent())
         .modifyDate(LocalDateTime.now())
-        .tag(tag)
         .build();
     this.commentRepository.save(comment);
+  }
+
+  public List<Comment> findAll() {
+    return this.commentRepository.findAll();
   }
 }

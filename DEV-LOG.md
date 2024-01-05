@@ -3,6 +3,7 @@
 ### feature/post-comments
 - [x] login, logout 성공 시 redirect url 수정
 - [x] comment create, modify에 @transactional 설정
+- [x] comment create, create 템플릿 수정
 
 ## 24-01-04
 ### feature/post-comments
