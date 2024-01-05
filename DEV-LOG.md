@@ -1,12 +1,14 @@
 # DEV-LOG
-## 24-01-05
+## 24-01-06
 ### feature/post-comments
+- [x] reply create 작성 및 review detail 수정
+
+## 24-01-05
 - [x] login, logout 성공 시 redirect url 수정
 - [x] comment create, modify에 @transactional 설정
 - [x] comment create, create 템플릿 수정
 
 ## 24-01-04
-### feature/post-comments
 - [x] Comment 작성 및 Member, Review 수정
 - [x] comment create 작성
 - [x] review detail 템플릿에 comment create 추가

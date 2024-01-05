@@ -1,15 +1,11 @@
 <html layout:decorate="~{/common/layout}">
 <div layout:fragment="content" class="container my-3">
-    <!-- 질문 -->
     <h2 class="border-bottom py-2" th:text="${review.subject}"></h2>
     <div class="card my-3">
         <div class="card-body">
             <div class="card-text" th:text="${review.content}"></div>
             <div class="d-flex justify-content-end">
-                <div th:if="${review.modifyDate != null}" class="badge bg-light text-dark p-2 text-start mx-3">
-                    <div class="mb-2">수정일</div>
-                    <div th:text="${#temporals.format(review.modifyDate, 'yyyy-MM-dd HH:mm')}"></div>
-                </div>
+                <!-- 댓글 작성자 및 작성일 표시 -->
                 <div class="badge bg-light text-dark p-2 text-start">
                     <div class="mb-2">
                         <span th:if="${review.author != null}" th:text="${review.author.username}"></span>
@@ -18,14 +14,9 @@
                 </div>
             </div>
             <div class="my-3">
-                <!--        <a href="javascript:void(0);" class="recommend btn btn-sm btn-outline-secondary"-->
-                <!--           th:data-uri="@{|/review/vote/${review.id}|}">-->
-                <!--          추천-->
-                <!--          <span class="badge rounded-pill bg-success" th:text="${#lists.size(review.voter)}"></span>-->
-                <!--        </a>-->
+                <!-- 댓글 수정 및 삭제 링크 -->
                 <a th:href="@{|/review/modify/${review.id}|}" class="btn btn-sm btn-outline-secondary"
-                   sec:authorize="isAuthenticated()"
-                   th:text="수정"></a>
+                   sec:authorize="isAuthenticated()" th:text="수정"></a>
                 <a href="javascript:void(0);" th:data-uri="@{|/review/delete/${review.id}|}"
                    class="delete btn btn-sm btn-outline-secondary" sec:authorize="isAuthenticated()"
                    th:text="삭제"></a>
@@ -37,57 +28,59 @@
                           th:text="| - ${comment.author.username}, ${#temporals.format(comment.createDate, 'yyyy-MM-dd HH:mm')} (수정: ${#temporals.format(comment.modifyDate, 'yyyy-MM-dd HH:mm')})|"></span>
                     <span th:if="${comment.modifyDate == null}"
                           th:text="| - ${comment.author.username}, ${#temporals.format(comment.createDate, 'yyyy-MM-dd HH:mm')}|"></span>
+                    <!-- 댓글 수정 및 삭제 링크 -->
                     <a sec:authorize="isAuthenticated()"
                        th:if="${#authentication.getPrincipal().getUsername() == comment.author.username}"
                        th:href="@{|/comment/modify/${comment.id}|}" class="small">수정</a>,
                     <a sec:authorize="isAuthenticated()"
                        th:if="${#authentication.getPrincipal().getUsername() == comment.author.username}"
                        href="javascript:void(0);" class="small delete" th:data-uri="@{|/comment/delete/${comment.id}|}">삭제</a>
-                </div>
-            </div>
-            <div>
-                <a th:href="@{|/comment/create/review/${review.id}|}" class="small"><small>댓글 추가 ..</small></a>
-            </div>
-        </div>
-    </div>
-    <h5 class="border-bottom my-3 py-2"
-        th:text="|${#lists.size(review.commentList)}개의 답변이 있습니다.|"></h5>
-    <!-- 답변 반복 시작 -->
-    <div class="card my-3" th:each="comment : ${review.commentList}">
-        <a th:id="|comment_${comment.id}|"></a>
-        <div class="card-body">
-            <div class="card-text" th:text="${comment.content}"></div>
-            <div class="d-flex justify-content-end">
-                <div th:if="${comment.modifyDate != null}" class="badge bg-light text-dark p-2 text-start mx-3">
-                    <div class="mb-2">수정</div>
-                    <div th:text="${#temporals.format(comment.modifyDate, 'yyyy-MM-dd HH:mm')}"></div>
-                </div>
-                <div class="badge bg-light text-dark p-2 text-start">
-                    <div class="mb-2">
-                        <span th:if="${comment.author != null}" th:text="${comment.author.username}"></span>
+                    <!-- 대댓글 목록 -->
+                    <div th:if="${comment != null and not #lists.isEmpty(comment.children)}" class="ml-3">
+                        <div th:each="reply : ${comment.children}" class="comment py-2 text-muted">
+                            <span style="white-space: pre-line;" th:text="${reply.content}"></span>
+                            <!-- (수정) 표시 -->
+                            <span th:if="${reply.modifyDate != null}"
+                                  th:text="| - ${reply.author.username}, ${#temporals.format(reply.createDate, 'yyyy-MM-dd HH:mm')} (수정: ${#temporals.format(reply.modifyDate, 'yyyy-MM-dd HH:mm')})|"></span>
+                            <!-- 작성일자 표시 -->
+                            <span th:if="${reply.modifyDate == null}"
+                                  th:text="| - ${reply.author.username}, ${#temporals.format(reply.createDate, 'yyyy-MM-dd HH:mm')}|"></span>
+                            <!-- 대댓글 수정 및 삭제 링크 -->
+                            <a sec:authorize="isAuthenticated()"
+                               th:if="${#authentication.getPrincipal().getUsername() == reply.author.username}"
+                               th:href="@{|/comment/modify/${reply.id}|}" class="small">수정</a>,
+                            <a sec:authorize="isAuthenticated()"
+                               th:if="${#authentication.getPrincipal().getUsername() == reply.author.username}"
+                               href="javascript:void(0);" class="small delete"
+                               th:data-uri="@{|/comment/delete/${reply.id}|}">삭제</a>
+                            <!-- 대댓글의 대댓글 목록 -->
+                            <div th:if="${reply != null and not #lists.isEmpty(reply.children)}" class="ml-3">
+                                <div th:each="subReply : ${reply.children}" class="comment py-2 text-muted">
+                                    <span style="white-space: pre-line;" th:text="${subReply.content}"></span>
+                                    <!-- (수정) 표시 -->
+                                    <span th:if="${subReply.modifyDate != null}"
+                                          th:text="| - ${subReply.author.username}, ${#temporals.format(subReply.createDate, 'yyyy-MM-dd HH:mm')} (수정: ${#temporals.format(subReply.modifyDate, 'yyyy-MM-dd HH:mm')})|"></span>
+                                    <!-- 작성일자 표시 -->
+                                    <span th:if="${subReply.modifyDate == null}"
+                                          th:text="| - ${subReply.author.username}, ${#temporals.format(subReply.createDate, 'yyyy-MM-dd HH:mm')}|"></span>
+                                    <!-- 대댓글의 대댓글 수정 및 삭제 링크 -->
+                                    <a sec:authorize="isAuthenticated()"
+                                       th:if="${#authentication.getPrincipal().getUsername() == subReply.author.username}"
+                                       th:href="@{|/comment/modify/${subReply.id}|}" class="small">수정</a>,
+                                    <a sec:authorize="isAuthenticated()"
+                                       th:if="${#authentication.getPrincipal().getUsername() == subReply.author.username}"
+                                       href="javascript:void(0);" class="small delete"
+                                       th:data-uri="@{|/comment/delete/${subReply.id}|}">삭제</a>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div th:text="${#temporals.format(comment.createDate, 'yyyy-MM-dd HH:mm')}"></div>
+                    <a th:href="@{|/comment/create/review/${review.id}/${comment.id}|}" class="small"><small>대댓글 추가 ..</small></a>
                 </div>
             </div>
-            <div class="my-3">
-                <a th:href="@{|/comment/modify/${comment.id}|}" class="btn btn-sm btn-outline-secondary"
-                   sec:authorize="isAuthenticated()"
-                   th:if="${comment.author != null and #authentication.getPrincipal().getUsername() == comment.author.username}"
-                   th:text="수정"></a>
-                <a href="javascript:void(0);" th:data-uri="@{|/comment/delete/${comment.id}|}"
-                   class="delete btn btn-sm btn-outline-secondary" sec:authorize="isAuthenticated()"
-                   th:if="${comment.author != null and #authentication.getPrincipal().getUsername() == comment.author.username}"
-                   th:text="삭제"></a>
-            </div>
         </div>
+        <a th:href="@{|/comment/create/review/${review.id}|}" class="small"><small>댓글 추가 ..</small></a>
     </div>
-    <form th:action="@{|/comment/create/${review.id}|}" th:object="${commentCreateForm}" method="post" class="my-3">
-        <div th:replace="~{/common/form_errors :: formErrorsFragment}"></div>
-        <textarea sec:authorize="isAnonymous()" disabled th:field="*{content}" class="form-control"
-                  rows="10"></textarea>
-        <textarea sec:authorize="isAuthenticated()" th:field="*{content}" class="form-control" rows="10"></textarea>
-        <input type="submit" value="댓글등록" class="btn btn-primary my-2">
-    </form>
 </div>
 <script layout:fragment="script" type='text/javascript'>
   const delete_elements = document.getElementsByClassName("delete");
@@ -98,7 +91,6 @@
           };
       });
   });
-
 
 </script>
 </html>

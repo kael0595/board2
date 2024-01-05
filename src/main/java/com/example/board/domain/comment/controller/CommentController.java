@@ -24,83 +24,120 @@ import java.security.Principal;
 @RequestMapping("/comment")
 public class CommentController {
 
-  private final CommentService commentService;
+    private final CommentService commentService;
 
-  private final ReviewService reviewService;
+    private final ReviewService reviewService;
 
-  private final MemberService memberService;
+    private final MemberService memberService;
 
-  @PreAuthorize("isAuthenticated()")
-  @GetMapping(value = "/create/review/{id}")
-  public String createQuestionComment(CommentCreateForm commentCreateForm) {
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping(value = "/create/review/{id}")
+    public String createComment(CommentCreateForm commentCreateForm) {
 
-    return "comment/create";
-  }
-
-  @PreAuthorize("isAuthenticated()")
-  @PostMapping("/create/review/{id}")
-  public String create(Model model,
-                       @PathVariable("id") Long id,
-                       Principal principal,
-                       @Valid CommentCreateForm commentCreateForm,
-                       BindingResult bindingResult) {
-
-    Review review = this.reviewService.findById(id);
-
-    Member author = this.memberService.findByUsername(principal.getName());
-
-    if (bindingResult.hasErrors()) {
-      model.addAttribute("review", review);
-      return "review/detail";
+        return "comment/create";
     }
 
-    this.commentService.createValidate(review);
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping("/create/review/{id}")
+    public String create(Model model,
+                         @PathVariable("id") Long id,
+                         Principal principal,
+                         @Valid CommentCreateForm commentCreateForm,
+                         BindingResult bindingResult) {
 
-    Comment tag = (commentCreateForm.getTagId() != null) ? this.commentService.getCommentById(commentCreateForm.getTagId()) : null;
+        Review review = this.reviewService.findById(id);
 
-    Comment comment = this.commentService.create(review, author, commentCreateForm, tag);
+        Member author = this.memberService.findByUsername(principal.getName());
 
-    return String.format("redirect:/review/%s#comment_%s",comment.getReview().getId(), comment.getId());
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("review", review);
+            return "review/detail";
+        }
 
-  }
+        this.commentService.createValidate(review);
 
-  @PreAuthorize("isAuthenticated()")
-  @GetMapping(value = "/modify/{id}")
-  public String modify(CommentCreateForm commentCreateForm,
-                       @PathVariable("id") Long id,
-                       Principal principal) {
-    Comment comment = this.commentService.getCommentById(id);
+        Comment tag = (commentCreateForm.getTagId() != null) ? this.commentService.getCommentById(commentCreateForm.getTagId()) : null;
 
-    Member author = this.memberService.findByUsername(principal.getName());
+        Comment comment = this.commentService.create(review, author, commentCreateForm, tag);
 
-    this.commentService.modifyValidate(comment, author);
+        return String.format("redirect:/review/%s#comment_%s", comment.getReview().getId(), comment.getId());
 
-    this.commentService.modify(comment, commentCreateForm);
+    }
 
-    return "comment/create";
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping(value = "/create/review/{reviewId}/{commentId}")
+    public String createReplyComment(CommentCreateForm commentCreateForm) {
 
-  }
+        return "comment/create";
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping("/create/review/{reviewId}/{commentId}")
+    public String createReply(@PathVariable("reviewId") Long reviewId,
+                              @PathVariable("commentId") Long commentId,
+                              @Valid CommentCreateForm commentCreateForm,
+                              Principal principal,
+                              BindingResult bindingResult,
+                              Model model) {
+
+        Review review = this.reviewService.findById(reviewId);
+
+        Member author = this.memberService.findByUsername(principal.getName());
+
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("review", review);
+            return "review/detail";
+        }
+
+        Comment tag = this.commentService.getCommentById(commentId);
+
+        this.commentService.createReplyValidate(review, tag);
+
+        Comment reply = this.commentService.create(review, author, commentCreateForm, tag);
+
+        tag.addChild(reply);
+
+        return String.format("redirect:/review/%s#comment_%s", reply.getReview().getId(), reply.getId());
+    }
 
 
-  @PreAuthorize("isAuthenticated()")
-  @PostMapping("/modify/{id}")
-  public String modify (Model model,
-                        @PathVariable("id") Long id,
-                        Principal principal,
-                        @Valid CommentCreateForm commentCreateForm,
-                        BindingResult bindingResult) {
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping(value = "/modify/{id}")
+    public String modify(CommentCreateForm commentCreateForm,
+                         @PathVariable("id") Long id,
+                         Principal principal) {
+        Comment comment = this.commentService.getCommentById(id);
 
-    Comment comment = this.commentService.getCommentById(id);
+        Member author = this.memberService.findByUsername(principal.getName());
 
-    Member author = this.memberService.findByUsername(principal.getName());
+        this.commentService.modifyValidate(comment, author);
 
-    if (bindingResult.hasErrors()) return "review/detail";
+        this.commentService.modify(comment, commentCreateForm);
 
-    this.commentService.modifyValidate(comment, author);
+        return "comment/create";
 
-    this.commentService.modify(comment, commentCreateForm);
+    }
 
-    return String.format("redirect:/review/%s#comment_%s",comment.getReview().getId(), comment.getId());
 
-  }
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping("/modify/{id}")
+    public String modify(Model model,
+                         @PathVariable("id") Long id,
+                         Principal principal,
+                         @Valid CommentCreateForm commentCreateForm,
+                         BindingResult bindingResult) {
+
+        Comment comment = this.commentService.getCommentById(id);
+
+        Member author = this.memberService.findByUsername(principal.getName());
+
+        if (bindingResult.hasErrors()) return "review/detail";
+
+        this.commentService.modifyValidate(comment, author);
+
+        this.commentService.modify(comment, commentCreateForm);
+
+        return String.format("redirect:/review/%s#comment_%s", comment.getReview().getId(), comment.getId());
+
+    }
 }

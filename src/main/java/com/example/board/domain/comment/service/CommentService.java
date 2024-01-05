@@ -28,6 +28,7 @@ public class CommentService {
     }
   }
 
+
   @Transactional
   public Comment create(Review review, Member author, CommentCreateForm commentCreateForm, Comment tag) {
     Comment comment = Comment.builder()
@@ -71,5 +72,16 @@ public class CommentService {
 
   public List<Comment> findAll() {
     return this.commentRepository.findAll();
+  }
+
+  public void createReplyValidate(Review review, Comment tag) {
+
+    if (review == null) {
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "존재하지 않는 리뷰입니다.");
+    }
+
+    if (tag == null) {
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "존재하지 않는 댓글입니다.");
+    }
   }
 }
