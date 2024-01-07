@@ -1,5 +1,8 @@
 # DEV-LOG
 ## 24-01-07
+### feature/post-comments
+- [x] CommentCreateForm @NotEmpty 설정
+
 ### feature/get-comment
 - [x] review detail 템플릿 수정
 
