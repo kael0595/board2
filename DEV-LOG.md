@@ -1,5 +1,8 @@
 # DEV-LOG
 ## 24-01-07
+### feature/file-module
+- [x] file module 생성
+
 ### feature/post-comments
 - [x] CommentCreateForm @NotEmpty 설정
 
