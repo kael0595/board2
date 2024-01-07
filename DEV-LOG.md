@@ -1,4 +1,8 @@
 # DEV-LOG
+## 24-01-07
+### feature/get-comment
+- [x] review detail 템플릿 수정
+
 ## 24-01-06
 ### feature/delete-comments
 - [x] comment delete 작성
